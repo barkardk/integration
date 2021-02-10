@@ -1,0 +1,25 @@
+version: "3.9"
+services:
+  rabbitmq-server:
+    image: rabbitmq:3-management
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    healthcheck:
+        test: ["CMD", "curl", "http://localhost:5672"]
+        interval: 30s
+        timeout: 5s
+        retries: 3
+  rabbitmq-test:
+    image:  ghcr.io/barkardk/rabbitmq-client:latest
+    restart: on-failure
+    depends_on:
+      - rabbitmq-server
+    links:
+      - rabbitmq-server
+    environment:
+      - RABBITMQ_AMQP_CONN_STR=amqp://guest:guest@rabbitmq-server:5672/
+

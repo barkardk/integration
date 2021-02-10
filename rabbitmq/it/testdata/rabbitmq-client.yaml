@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  labels:
+    app: rabbitmq-client
+  name: rabbitmq-client
+spec:
+  template:
+    metadata:
+      labels:
+        app: rabbitmq-client
+    spec:
+      containers:
+        - image: ghcr.io/barkardk/rabbitmq-client:latest
+          imagePullPolicy: Always
+          name: rabbitmq-client
+          env:
+            - name: RABBITMQ_AMQP_CONN_STR
+              value: "amqp://guest:guest@rabbitmq:5672/"
+      restartPolicy: OnFailure
+  backoffLimit: 5
+
+
