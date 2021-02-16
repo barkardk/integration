@@ -1,10 +1,6 @@
 FROM alpine
-COPY target/linux/it.test .
+COPY target/linux/mq_test .
 COPY passwd.minimal /etc/passwd
-RUN chown rabbit it.test
-
-FROM scratch
-COPY --from=0 it.test .
-COPY passwd.minimal /etc/passwd
+RUN chown rabbit mq_test
 USER rabbit
-ENTRYPOINT ["./it.test", "-test.v", "-test.timeout=30s", "-test.count=2"]
+CMD ["sh", "-c", "tail -f /dev/null"]

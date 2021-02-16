@@ -19,8 +19,8 @@ test:
 	go test -tags=rabbitintegration  it/mq_test.gp -v -count=1;
 build.linux:
 	mkdir -p target/linux
-	env GOARCH=amd64 GOOS=linux go test it/mq_test.go -c -o target/linux/it.test
-	chmod 755 target/linux/it.test
+	env GO111MODULE=on CGO_ENABLED=0 GOARCH=amd64 GOOS=linux go build -o target/linux/mq_test -tags prod -mod=readonly -ldflags "-s -w " ./it
+	chmod 755 target/linux/mq_test
 build.docker.and.push:
 	docker build -t ${TAG} .
 	docker tag ${TAG} ${DOCKER_REGISTRY}/rabbitmq-client:${TAG}
@@ -29,8 +29,8 @@ build.docker.and.push:
 	docker push ${DOCKER_REGISTRY}/rabbitmq-client:latest
 build.darwin:
 	mkdir -p target/darwin
-	go test it/mq_test.go -c -o target/darwin/it.test
-	chmod 755 target/darwin/it.test
+	go build -o target/darwin/mq_test -tags dev it/main.go
+	chmod 755 target/darwin/mq_test
 
 
 
