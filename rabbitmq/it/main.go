@@ -71,7 +71,7 @@ func RabbitMQCreateQueue(conn *amqp.Connection, m *mqResources) error {
 	if m.queueName != q.Name {
 		return fmt.Errorf("expected queue name (%v) got (%v)", m.queueName, q.Name)
 	}
-	log.Printf("[OK] Create message queue %s\n", q.Name)
+	log.Printf("[OK] Create message queue %s", q.Name)
 	return nil
 }
 
@@ -102,7 +102,7 @@ func  RabbitMQPublishMessage(conn *amqp.Connection, m *mqResources) error {
 	if result.Messages != m.expectedMessageCountPublished {
 		return fmt.Errorf("expected messagecount %d got messageCount %d", m.expectedMessageCountPublished, result.Messages)
 	}
-	log.Printf("[OK] Published message. Message count: %v\n", result.Messages)
+	log.Printf("[OK] Published message. Message count: %v", result.Messages)
 	return nil
 
 }
@@ -136,7 +136,7 @@ func RabbitMQConsumeMessage(conn *amqp.Connection, m *mqResources) error {
 	if result.Messages != m.expectedMessageCountConsumed {
 		return fmt.Errorf("expected messagecount %d got messageCount %d", m.expectedMessageCountConsumed, result.Messages)
 	}
-	log.Printf("[OK] Consumed message. Message count: %v\n", result.Messages)
+	fmt.Printf("[OK] Consumed message. Message count: %v", result.Messages)
 	return nil
 }
 
