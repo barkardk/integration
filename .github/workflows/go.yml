@@ -18,8 +18,13 @@ jobs:
       with:
         go-version: 1.15
 
+    - name: Format
+      run: go fmt rabbitmq/it/main.go
+      
+    - name: Vet
+      run: go vet rabbitmq/it/main.go
+      
     - name: Build
-      run: go build -v ./...
+      run: go build -v ./rabbitmq/it/main.go
 
-    - name: Test
-      run: go test -v ./...
+    
