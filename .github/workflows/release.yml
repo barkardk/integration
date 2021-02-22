@@ -43,7 +43,7 @@ jobs:
       - name: Login to Registry
         uses: docker/login-action@v1
         with:
-          registry: registry.qstack.com
+          registry: ghcr.io/barkardk
           username: ${{ github.actor  }}
           password: ${{ secrets.token }}
 
