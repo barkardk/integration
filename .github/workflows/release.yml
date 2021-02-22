@@ -38,4 +38,17 @@ jobs:
 
             ## Improvements :+1:
 
+  check:
+    runs-on: ubuntu-latest
+    container:
+      image: golang:1.16
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Lint
+        uses: golangci/golangci-lint-action@v2
+        with:
+          version: v1.32
+          args: --timeout 10m
 
