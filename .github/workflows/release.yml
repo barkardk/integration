@@ -6,12 +6,18 @@ on:
 
 jobs:
   release:
+    strategy:
+      matrix:
+        go: [ 1.16 ]
+        os: [ ubuntu-latest ]
+    runs-on: ${{ matrix.os }}
     name: Release nkdev
-    runs-on: Ubuntu-latest
     needs: check
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          go-version: ${{ matrix.go }}
 
       - name: Set VERSION
         run: |
@@ -21,6 +27,8 @@ jobs:
       - name: Build release
         working-directory: ./rabbitmq
         run: make -j3 -d build-linux
+        with:
+          go-version: ${{ matrix.go }}
 
      - name: Push to GitHub Packages
        uses: docker/build-push-action@v1
@@ -51,17 +59,23 @@ jobs:
             ## Improvements :+1:
 
   check:
-    runs-on: ubuntu-latest
-    container:
-      image: golang:1.16
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    strategy:
+      matrix:
+        go: [ 1.16 ]
+        os: [ ubuntu-latest ]
+      runs-on: ${{ matrix.os }}
+      container:
+        image: golang:${{ matrix.go }}
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+          with:
+            go-version: ${{ matrix.go }}
 
-      - name: Lint
-        uses: golangci/golangci-lint-action@v2
-        with:
-          version: v1.32
-          args: --timeout 10m
-          working-directory: ./rabbitmq
+        - name: Lint
+          uses: golangci/golangci-lint-action@v2
+          with:
+            version: v1.32
+            args: --timeout 10m
+            working-directory: ./rabbitmq
 
