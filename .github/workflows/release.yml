@@ -41,7 +41,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ github.token }}
           registry: ghcr.io
-          repository: barkardk/integration/rabbitmq-client
+          repository: barkardk/rabbitmq-client
           tag_with_ref: true
           path: ./rabbitmq
 
