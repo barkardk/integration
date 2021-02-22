@@ -2,12 +2,24 @@
 
 Various integration tests that can be used on common platforms  
 
+
 ### Release
 Stable versions are released via tags that published the docker images to github via actions.
 
 # RabbitMQ integration
 RabbitMQ integration is a small test suite to test rabbitmq server installations.  
 It works by connecting to a rabbitmq server via a provided AMQP string, it will then create a queue , post a message and consume the message.
+
+## Dockerfiles
+Download the dockerfiles where VERSION is any of the release tags. 
+```bash
+#> docker pull ghcr.io/barkardk/rabbitmq-client:VERSION
+```
+
+The client needs a running rabbitmq server to start up properly   
+ 
+
+
 ## Installation
 
 Build a test binary , compile a docker image and push to docker registry
