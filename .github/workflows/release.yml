@@ -35,7 +35,7 @@ jobs:
         uses: docker/build-push-action@v1
         with:
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.REGISTRY }}
           registry: ghcr.io
           repository: barkardk/integration/rabbitmq-client
           tag_with_ref: true
