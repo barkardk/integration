@@ -1,12 +1,10 @@
-name: Go
+name: Test
 
 on:
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-
-name: Test
 jobs:
   test:
     strategy:
