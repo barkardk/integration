@@ -49,8 +49,8 @@ jobs:
 
       - name: Lint
         uses: golangci/golangci-lint-action@v2
-        working-directory: ./rabbitmq
         with:
           version: v1.32
           args: --timeout 10m
+          working-directory: ./rabbitmq
 

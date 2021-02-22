@@ -18,17 +18,9 @@ jobs:
         working-directory: ./rabbitmq
         run: make build
 
-  check:
-    runs-on: ubuntu-latest
-    container:
-      image: golang:1.16
-    steps:
-      - name: Check out code into the Go module directory
-        uses: actions/checkout@v2
-
       - name: Lint
         uses: golangci/golangci-lint-action@v2
-        working-directory: ./rabbitmq
         with:
           version: v1.28
           args: --timeout 10m
+          working-directory: ./rabbitmq
