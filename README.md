@@ -46,7 +46,7 @@ kubectl logs -l app=rabbitmq-client
 |   Parameter | Default   |  
 |:---|---|
 | RABBITMQ_AMQP_CONN_STR  | amqp://guest:guest@localhost:5672/  |  
-| TAG  |  `git describe --tags --dirty --match='v*' 2>/dev/null || echo v0.0.0) | cut -c2- `|  
+| VERSION  |  git describe --tags --dirty --match='v*' 2>/dev/null || echo v0.0.0) | cut -c2- |  
 | DOCKER_REGISTRY | ghcr.io/barkardk  |
 
 
