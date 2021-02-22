@@ -19,7 +19,9 @@ jobs:
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
 
       - name: Build release
-        run: make -j3 -d release
+        run:
+          - cd rabbitmq
+          - make -j3 -d release
 
       - name: Create GH release
         id: create_release
@@ -48,6 +50,7 @@ jobs:
 
       - name: Lint
         uses: golangci/golangci-lint-action@v2
+        run: cd rabbitmq
         with:
           version: v1.32
           args: --timeout 10m
