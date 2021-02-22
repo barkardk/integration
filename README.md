@@ -1,3 +1,4 @@
+
 # Integration tests
 
 Various integration tests that can be used on common platforms  
@@ -13,7 +14,7 @@ It works by connecting to a rabbitmq server via a provided AMQP string, it will 
 ## Dockerfiles
 Download the dockerfiles where VERSION is any of the release tags. 
 ```bash
-#> docker pull ghcr.io/barkardk/rabbitmq-client:VERSION
+docker pull ghcr.io/barkardk/rabbitmq-client:VERSION
 ```
 
 The client needs a running rabbitmq server to start up properly   
@@ -24,26 +25,29 @@ The client needs a running rabbitmq server to start up properly
 
 Build a test binary , compile a docker image and push to docker registry
 ```bash
-#> make build
+make build
 ```
 Deploy to kubernetes
 ```bash
-#> kubectl apply -f it/testdata
+kubectl apply -f it/testdata
 ```
 ## Usage
 Run locally using docker compose
 ```bash
-#> docker-compose up
+docker-compose up
 ```
 
 When deploying to kubernetes the rabbit mq client pod will run as a job, check the job logs for output
 ```bash
-#> kubectl logs -l app=rabbitmq-client
+kubectl logs -l app=rabbitmq-client
 ```
 
 ## Parameters
 |   Parameter | Default   |  
-|---|---|
+|:---|---|
 | RABBITMQ_AMQP_CONN_STR  | amqp://guest:guest@localhost:5672/  |  
 | TAG  |  git-rev parse HEAD --short |  
-| DOCKER_REGISTRY | ghcr.io/barkardk  |  
+| DOCKER_REGISTRY | ghcr.io/barkardk  |
+
+
+![Octocat](https://github.githubassets.com/images/icons/emoji/octocat.png)
