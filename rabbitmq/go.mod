@@ -8,8 +8,8 @@ require (
 	github.com/gophercloud/gophercloud v0.15.0 // indirect
 	github.com/imdario/mergo v0.3.11 // indirect
 	github.com/linkerd/linkerd2 v18.9.1+incompatible // indirect
-	github.com/sirupsen/logrus v1.7.0 // indirect
-	github.com/streadway/amqp v1.0.0 // indirect
+	github.com/sirupsen/logrus v1.7.0
+	github.com/streadway/amqp v1.0.0
 	golang.org/x/net v0.0.0-20210119194325-5f4716e94777 // indirect
 	golang.org/x/time v0.0.0-20201208040808-7e3f01d25324 // indirect
 	google.golang.org/grpc v1.35.0 // indirect

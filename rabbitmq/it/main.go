@@ -6,15 +6,17 @@ import (
 	"github.com/streadway/amqp"
 	"os"
 )
+
 var version = "undefined"
+
 type mqResources struct {
-	queueName string
-	messageBody string
+	queueName                     string
+	messageBody                   string
 	expectedMessageCountPublished int
-	expectedMessageCountConsumed int
+	expectedMessageCountConsumed  int
 }
 
-func defaultConnStr() string{
+func defaultConnStr() string {
 	defaultConnStr, exists := os.LookupEnv("RABBITMQ_AMQP_CONN_STR")
 	if exists {
 		return defaultConnStr
@@ -22,8 +24,7 @@ func defaultConnStr() string{
 	return "amqp://guest:guest@127.0.0.1:5672/"
 }
 
-
-func RabbitMQAMQPConnection() (*amqp.Connection, error)  {
+func RabbitMQAMQPConnection() (*amqp.Connection, error) {
 	conn, err := amqp.Dial(defaultConnStr())
 	if err != nil {
 		return nil, fmt.Errorf("Could not connect to rabbitMQ %s", err)
@@ -33,10 +34,10 @@ func RabbitMQAMQPConnection() (*amqp.Connection, error)  {
 
 func main() {
 	qn := &mqResources{
-		queueName: "MQTestQueue",
-		messageBody: "This is a test message",
+		queueName:                     "MQTestQueue",
+		messageBody:                   "This is a test message",
 		expectedMessageCountPublished: 1,
-		expectedMessageCountConsumed: 0,
+		expectedMessageCountConsumed:  0,
 	}
 
 	conn, err := RabbitMQAMQPConnection()
@@ -45,7 +46,7 @@ func main() {
 	}
 
 	if err := RabbitMQCreateQueue(conn, qn); err != nil {
-		log.Fatalf( "Error connect to RabbitMQ and create a queue %v", err)
+		log.Fatalf("Error connect to RabbitMQ and create a queue %v", err)
 	}
 
 	if err := RabbitMQPublishMessage(conn, qn); err != nil {
@@ -75,7 +76,7 @@ func RabbitMQCreateQueue(conn *amqp.Connection, m *mqResources) error {
 	return nil
 }
 
-func  RabbitMQPublishMessage(conn *amqp.Connection, m *mqResources) error {
+func RabbitMQPublishMessage(conn *amqp.Connection, m *mqResources) error {
 	ch, err := conn.Channel()
 	if err != nil {
 		log.Errorf("could not open channel %s", err)
@@ -88,7 +89,7 @@ func  RabbitMQPublishMessage(conn *amqp.Connection, m *mqResources) error {
 		false,
 		amqp.Publishing{
 			ContentType: "text/plain",
-			Body: []byte(m.messageBody),
+			Body:        []byte(m.messageBody),
 		}); err != nil {
 		log.Errorf("failed to publish message %s", err)
 	}
@@ -110,7 +111,7 @@ func  RabbitMQPublishMessage(conn *amqp.Connection, m *mqResources) error {
 func RabbitMQConsumeMessage(conn *amqp.Connection, m *mqResources) error {
 	ch, err := conn.Channel()
 	if err != nil {
-		fmt.Errorf("fould not open channel %s", err)
+		log.Errorf("Could not open channel %s", err)
 	}
 	defer ch.Close()
 	msgs, err := ch.Consume(
@@ -127,16 +128,15 @@ func RabbitMQConsumeMessage(conn *amqp.Connection, m *mqResources) error {
 		log.Errorf("failed to register a consumer %s", err)
 	}
 	for d := range msgs {
-		if string(d.Body) !=  m.messageBody {
+		if string(d.Body) != m.messageBody {
 			log.Errorf("Expected message body %v got %v", d.Body, m.messageBody)
 		}
 		d.Ack(false)
 	}
-	result, _:= ch.QueueInspect(m.queueName)
+	result, _ := ch.QueueInspect(m.queueName)
 	if result.Messages != m.expectedMessageCountConsumed {
 		return fmt.Errorf("expected messagecount %v got messageCount %v", m.expectedMessageCountConsumed, result.Messages)
 	}
 	fmt.Printf("[OK] Consumed message. Message count: %v\n", result.Messages)
 	return nil
 }
-
