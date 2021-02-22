@@ -6,13 +6,15 @@ on:
 
 jobs:
   release:
+    defaults:
+      run:
+        working-directory: ./rabbitmq
     strategy:
       matrix:
         go: [ 1.16 ]
         os: [ ubuntu-latest ]
     runs-on: ${{ matrix.os }}
-    name: Release nkdev
-    needs: check
+    name: Release mq_test
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -26,8 +28,7 @@ jobs:
 
       - name: Build release
         uses: actions/setup-go@v1
-        working-directory: ./rabbitmq
-        run: make -j3 -d build-linux
+        run: make build.linux
         with:
           go-version: ${{ matrix.go }}
 
