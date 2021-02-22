@@ -42,7 +42,8 @@ When deploying to kubernetes the rabbit mq client pod will run as a job, check t
 ```
 
 ## Parameters
-|   Parameter | Default   |
+|   Parameter | Default   |  
+
 |---|---|  
 
 | RABBITMQ_AMQP_CONN_STR  | amqp://guest:guest@localhost:5672/  |  
