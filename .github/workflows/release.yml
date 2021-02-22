@@ -31,6 +31,9 @@ jobs:
         go-version: [ 1.15 ]
         os: [ ubuntu-latest ]
     runs-on: ${{ matrix.os }}
+    needs: setup
+    env:
+      VERSION: ${{ needs.setup.outputs.version }}
     steps:
       - name: Install Go
         uses: actions/setup-go@v2
