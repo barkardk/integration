@@ -3,31 +3,27 @@ on: [push, pull_request]
 
 jobs:
   build:
+    defaults:
+      run:
+        working-directory: ./rabbitmq
     strategy:
       matrix:
-        go: [ 1.14, 1.15, 1.16 ]
+        go-version: [ 1.14, 1.15, 1.16 ]
         os: [ ubuntu-latest, macos-latest, windows-latest ]
     runs-on: ${{ matrix.os }}
     steps:
+      - name: Install Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ matrix.go-version }}
       - name: Check out code into the Go module directory
         uses: actions/checkout@v2
-        with:
-          go-version: ${{ matrix.go }}
 
       - name: Download modules
-        uses: actions/setup-go@v1
-        working-directory: ./rabbitmq
         run:  go mod download -json
-        with:
-          go-version: ${{ matrix.go }}
-
 
       - name: Build linux
-        uses: actions/setup-go@v1
-        working-directory: ./rabbitmq
         run: make build.linux
-        with:
-          go-version: ${{ matrix.go }}
 
       - name: Lint
         uses: golangci/golangci-lint-action@v2

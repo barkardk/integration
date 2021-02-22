@@ -11,15 +11,17 @@ jobs:
         working-directory: ./rabbitmq
     strategy:
       matrix:
-        go: [ 1.16 ]
+        go-version: [ 1.16 ]
         os: [ ubuntu-latest ]
     runs-on: ${{ matrix.os }}
     name: Release mq_test
     steps:
+      - name: Install Go
+          uses: actions/setup-go@v2
+          with:
+            go-version: ${{ matrix.go-version }}
       - name: Checkout code
         uses: actions/checkout@v2
-        with:
-          go-version: ${{ matrix.go }}
 
       - name: Set VERSION
         run: |
@@ -27,10 +29,8 @@ jobs:
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
 
       - name: Build release
-        uses: actions/setup-go@v1
+        uses: actions/setup-go@v2
         run: make build.linux
-        with:
-          go-version: ${{ matrix.go }}
 
      - name: Push to GitHub Packages
        uses: docker/build-push-action@v1
