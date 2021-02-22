@@ -15,16 +15,15 @@ jobs:
           go-version: ${{ matrix.go }}
 
       - name: Download modules
+        uses: actions/setup-go@v1
         working-directory: ./rabbitmq
+        run:  go mod download -json
         with:
           go-version: ${{ matrix.go }}
-        run:  go mod download -json
 
-
-      - name: Checkout code
-        uses: actions/checkout@v2
 
       - name: Build linux
+        uses: actions/setup-go@v1
         working-directory: ./rabbitmq
         run: make build.linux
         with:

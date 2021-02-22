@@ -25,6 +25,7 @@ jobs:
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
 
       - name: Build release
+        uses: actions/setup-go@v1
         working-directory: ./rabbitmq
         run: make -j3 -d build-linux
         with:
