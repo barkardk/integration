@@ -1,1 +1,4 @@
 theme: jekyll-theme-minimal
+title: Integration test clients
+description: Small fast clients to run integration tests on various installations
+logo: https://github.com/barkardk/integration/settings/og-template
