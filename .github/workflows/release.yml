@@ -20,7 +20,18 @@ jobs:
 
       - name: Build release
         working-directory: ./rabbitmq
-        run: make -j3 -d release
+        run: make -j3 -d build-linux
+
+     - name: Push to GitHub Packages
+       uses: docker/build-push-action@v1
+        with:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: ghcr.io
+          repository: barkardk/integration/rabbitmq-client
+          tag_with_ref: true
+          path: ./rabbitmq
+
 
       - name: Create GH release
         id: create_release
