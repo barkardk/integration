@@ -6,23 +6,22 @@ on:
   pull_request:
     branches: [ main ]
 
+name: Test
 jobs:
-  - name: Test
-  jobs:
-    test:
-      strategy:
-        matrix:
-          go-version: [ 1.14.x, 1.15.x, 1.16.x ]
-          os: [ Ubuntu-20.04, macos-latest ]
-      runs-on: ${{ matrix.os }}
-      steps:
-        - name: Install Go
-          uses: actions/setup-go@v2
-          with:
-            go-version: ${{ matrix.go-version }}
-        - name: Checkout code
-          uses: actions/checkout@v2
-        - name: Vet
-          run: go vet ./...
-        - name: Fmt
-          run: go fmt ./...
+  test:
+    strategy:
+      matrix:
+        go-version: [ 1.14.x, 1.15.x, 1.16.x]
+        os: [ Ubuntu-20.04, macos-latest ]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Install Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ matrix.go-version }}
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Vet
+        run: go vet ./...
+      - name: Fmt
+        run: go fmt ./...
