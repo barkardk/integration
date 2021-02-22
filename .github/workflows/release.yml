@@ -31,11 +31,15 @@ jobs:
       - name: Build release
         run: make build.linux
 
-      - name: Push to GitHub Packages
-        uses: docker/build-push-action@v1
+      - name: Set branch or tag name
+        id: vars
+        run: echo ::set-output name=short_ref::${GITHUB_REF#refs/*/}
+
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v1.1.0
         with:
           username: ${{ github.actor }}
-          password: ${{ secrets.REGISTRY }}
+          password: ${{ github.token }}
           registry: ghcr.io
           repository: barkardk/integration/rabbitmq-client
           tag_with_ref: true
