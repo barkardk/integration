@@ -28,8 +28,8 @@ build.linux:
 	env GO111MODULE=on CGO_ENABLED=0 GOARCH=amd64 GOOS=linux go build -o target/linux/mq_test -tags ${VERSION} -mod=readonly -ldflags "-s -w -X main.version=$(git describe --always --long --dirty)" ./it
 	chmod 755 target/linux/mq_test
 build.docker.and.push:
-	docker build -t ${VERSION} .
-	docker tag ${TAG} ${DOCKER_REGISTRY}/rabbitmq-client:${VERSION}
+	docker build -t rabbitmq-client:${VERSION} .
+	docker tag rabbitmq-client:${VERSION} ${DOCKER_REGISTRY}/rabbitmq-client:${VERSION}
 	docker push ${DOCKER_REGISTRY}/rabbitmq-client:${VERSION}
 build.darwin:
 	mkdir -p target/darwin
