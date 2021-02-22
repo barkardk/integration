@@ -6,7 +6,7 @@ import (
 	"github.com/streadway/amqp"
 	"os"
 )
-
+var version = "undefined"
 type mqResources struct {
 	queueName string
 	messageBody string
