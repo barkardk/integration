@@ -25,9 +25,3 @@ jobs:
       - name: Build linux
         run: make build.linux
 
-      - name: Lint
-        uses: golangci/golangci-lint-action@v2
-        with:
-          version: v1.29
-          args: --timeout 10m
-          working-directory: ./rabbitmq
