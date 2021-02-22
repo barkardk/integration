@@ -20,6 +20,7 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: ${{ matrix.go-version }}
+
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -29,7 +30,6 @@ jobs:
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
 
       - name: Build release
-        uses: actions/setup-go@v2
         run: make build.linux
 
      - name: Push to GitHub Packages
