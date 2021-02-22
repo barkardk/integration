@@ -1,7 +1,8 @@
 theme: jekyll-theme-minimal
-title: Integration test clients
+title: Integration
 description: Small fast clients to run integration tests on various installations
 logo: img/spider.jpg
+show_downloads: true
 lsi: false
 safe: true
 source: /
