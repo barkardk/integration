@@ -11,25 +11,19 @@ jobs:
         os: [ ubuntu-latest ]
     runs-on: ${{ matrix.os }}
     steps:
-      - name: Prepare
-        id: prep
-        run: |
-          VERSION=unstable
-          SHORTREF=${GITHUB_SHA::8}
-
-          # If this is git tag, use the tag name as a docker tag
-          if [[ $GITHUB_REF == refs/tags/* ]]; then
-            VERSION=${GITHUB_REF#refs/tags/v}
-          fi
-          TAGS="rabbitmq-client:${VERSION},rabbitmq-client:${SHORTREF}
-
-          # Set output parameters.
-          echo ::set-output name=tags::${TAGS}
-          echo ::set-output name=docker_image::${DOCKER_IMAGE}
       - name: Install Go
         uses: actions/setup-go@v2
         with:
           go-version: ${{ matrix.go-version }}
+
+      - name: Prepare
+          id: prep
+          run: |
+            VERSION=unstable
+            SHORTREF=${GITHUB_SHA::8}
+            TAGS="rabbitmq-client:${VERSION},rabbitmq-client:${SHORTREF}
+            # Set output parameters.
+            echo ::set-output name=tags::${TAGS}
 
       - name: Check out code into the Go module directory
         uses: actions/checkout@v2
@@ -63,6 +57,9 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.prep.outputs.tags }}
+
+      - name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
 
         env:
           VERSION: ${{ needs.setup.outputs.version }}
