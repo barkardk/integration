@@ -24,8 +24,7 @@ jobs:
         run: |
           VERSION=unstable
           SHORTREF=${GITHUB_SHA::8}
-          TAGS="rabbitmq-client:${VERSION},rabbitmq-client:${SHORTREF}
-          # Set output parameters.
+          TAGS="rabbitmq-client:${VERSION},rabbitmq-client:${SHORTREF}"
           echo ::set-output name=tags::${TAGS}
 
       - name: Download modules
