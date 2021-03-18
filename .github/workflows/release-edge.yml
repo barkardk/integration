@@ -55,7 +55,6 @@ jobs:
           password: ${{ secrets.token }}
 
       - name: Build and deploy image
-        run: make build
         uses: docker/build-push-action@v2
         with:
           builder: ${{ steps.buildx.outputs.name }}
