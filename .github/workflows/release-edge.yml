@@ -17,13 +17,13 @@ jobs:
           go-version: ${{ matrix.go-version }}
 
       - name: Prepare
-          id: prep
-          run: |
-            VERSION=unstable
-            SHORTREF=${GITHUB_SHA::8}
-            TAGS="rabbitmq-client:${VERSION},rabbitmq-client:${SHORTREF}
-            # Set output parameters.
-            echo ::set-output name=tags::${TAGS}
+        id: prep
+        run: |
+          VERSION=unstable
+          SHORTREF=${GITHUB_SHA::8}
+          TAGS="rabbitmq-client:${VERSION},rabbitmq-client:${SHORTREF}
+          # Set output parameters.
+          echo ::set-output name=tags::${TAGS}
 
       - name: Check out code into the Go module directory
         uses: actions/checkout@v2
