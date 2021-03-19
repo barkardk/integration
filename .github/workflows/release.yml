@@ -14,13 +14,11 @@ jobs:
         with:
           fetch-depth: 0
       - id: version
-        name: Configure Version
+        name: Configure Version for binary
         run: |
           export VERSION=$((git describe --tags --dirty --match='v*' 2>/dev/null || echo v0.0.0) | cut -c2- )
           echo "Determined version ${VERSION} to use for the build"
-          TAGS="ghcr.io/barkardk/rabbitmq-client:${VERSION},ghcr.io/barkardk/rabbitmq-client:stable"
           echo "::set-output name=version::${VERSION}"
-          echo ::set-output name=tags::${TAGS}
     outputs:
       version: ${{ steps.version.outputs.version }}
   release:
@@ -44,6 +42,13 @@ jobs:
 
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Prepare tag for docker
+          id: prep
+          run: |
+            TAG=$((git describe --tags --dirty --match='v*' 2>/dev/null || echo v0.0.0) | cut -c2- )
+            TAGS="ghcr.io/barkardk/rabbitmq-client:${TAG}"
+            echo ::set-output name=tags::${TAGS}
 
       - name: Download modules
         run: go mod download -json
@@ -78,7 +83,7 @@ jobs:
           file: rabbitmq/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ${{ steps.prep.version.tags }}
+          tags: ${{ steps.prep.outputs.tags }}
           github-token: ${{ secrets.token }}
 
       - name: Create GH release
