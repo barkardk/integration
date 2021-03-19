@@ -44,11 +44,11 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Prepare tag for docker
-          id: prep
-          run: |
-            TAG=$((git describe --tags --dirty --match='v*' 2>/dev/null || echo v0.0.0) | cut -c2- )
-            TAGS="ghcr.io/barkardk/rabbitmq-client:${TAG}"
-            echo ::set-output name=tags::${TAGS}
+        id: prep
+        run: |
+          TAG=$((git describe --tags --dirty --match='v*' 2>/dev/null || echo v0.0.0) | cut -c2- )
+          TAGS="ghcr.io/barkardk/rabbitmq-client:${TAG}"
+          echo ::set-output name=tags::${TAGS}
 
       - name: Download modules
         run: go mod download -json
