@@ -78,7 +78,7 @@ jobs:
           file: rabbitmq/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ${{ steps.prep.outputs.tags }}
+          tags: ${{ steps.prep.version.tags }}
           github-token: ${{ secrets.token }}
 
       - name: Create GH release
