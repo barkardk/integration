@@ -6,14 +6,10 @@ endif
 ifndef DOCKER_REGISTRY
 	DOCKER_REGISTRY=ghcr.io/barkardk
 endif
-fmt:
-	go fmt $(NON_VENDOR_PACKAGES)
-vet:
-	go vet $(NON_VENDOR_PACKAGES)
 
 docker.restart: docker.stop docker.start
-build: build.linux build.docker.and.push
-release: fmt vet build.linux build.docker.and.push
+build: build.linux
+release: build.linux
 
 docker.start:
 	docker-compose up -d --remove-orphans;
@@ -36,6 +32,30 @@ build.darwin:
 	go build -o target/darwin/mq_test -tags dev  it/main.go
 	chmod 755 target/darwin/mq_test
 
+.PHONY: test
+test:
+	@echo "-> $@"
+	go test -v -race ./...
+
+.PHONY: fmt
+fmt:
+	@echo "-> $@"
+	@gofmt -s -l ./ | grep -v vendor | tee /dev/stderr
+
+.PHONY: lint
+lint:
+	@echo "-> $@"
+	@go get -u golang.org/x/lint/golint
+	@golint ./... | tee /dev/stderr
+	@go get -u golang.org/x/tools/go/analysis/cmd/vet
+	@go vet --all
+
+.PHONY: dep
+dep:
+	@echo "-> $@"
+	@go mod tidy
+	@go get -u github.com/golang/dep/cmd/dep
+	@dep init && dep ensure -vendor-only
 
 
 
