@@ -49,4 +49,4 @@ jobs:
       - name: Build docker container
         run:  |
           echo "${{ secrets.token }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
-          make VERSION=${{ steps.version.outputs.SOURCE_TAG }} -j3 release
+          make VERSION=${{ steps.version.outputs.VERSION }} -j3 release
