@@ -3,7 +3,8 @@ ARG GOARCH=amd64
 ARG GOOS=linux
 ARG CGO_ENABLED=0
 ARG BUILD_TIME=$(date -u '+%F_%T')
-ARG MAIN_VERSION=1.0.0
+ARG MAIN_VERSION="1.0.0"
+
 WORKDIR /src
 COPY go.mod /src/
 COPY it /src/it
