@@ -3,13 +3,13 @@ ARG GOARCH=amd64
 ARG GOOS=linux
 ARG CGO_ENABLED=0
 ARG BUILD_TIME=$(date -u '+%F_%T')
-ARG MAIN_VERSION="1.0.0"
+ARG VERSION=""
 
 WORKDIR /src
 COPY go.mod /src/
 COPY it /src/it
 RUN go mod download -json >/dev/null && \
-    GO111MODULE=on CGO_ENABLED=$CGO_ENABLED GOARCH=$GOARCH GOOS=$GOOS go build -o target/mq_test -tags ${VERSION} -ldflags "-s -w -X main.Version=${MAIN_VERSION} -X main.BuildTime=${BUILD_TIME}" ./it
+    GO111MODULE=on CGO_ENABLED=$CGO_ENABLED GOARCH=$GOARCH GOOS=$GOOS go build -o target/mq_test -tags $VERSION -ldflags "-s -w -X main.Version=$VERSION -X main.BuildTime=$BUILD_TIME" ./it
 
 FROM alpine
 COPY --from=build /src/target/mq_test .

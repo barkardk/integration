@@ -35,13 +35,12 @@ TARGETARCH := amd64 arm arm64
 build.linux: $(TARGETARCH) ## Build multiarch linux binaries
 
 VERSION=$(shell (git describe --tags --dirty --match='v*' 2>/dev/null || echo v0.0.0) | cut -c2- )
-MAIN_VERSION=$(shell (git describe --always --long --dirty))
 
 .PHONY: $(TARGETARCH)
 ARCH = ${word 1, $@}
 $(TARGETARCH): ## Build multiarch linux binaries
 	@echo "-> $@"
-	env GO111MODULE=on CGO_ENABLED=0 GOARCH=$(ARCH) GOOS=linux go build -o target/linux-$(ARCH)/mq_test -tags ${VERSION} -ldflags "-s -w -X main.Version=${MAIN_VERSION} -X main.BuildTime=${BUILD_TIME}" ./it
+	env GO111MODULE=on CGO_ENABLED=0 GOARCH=$(ARCH) GOOS=linux go build -o target/linux-$(ARCH)/mq_test -tags ${VERSION} -ldflags "-s -w -X main.Version=${VERSION} -X main.BuildTime=${BUILD_TIME}" ./it
 	@chmod 755 target/linux-$(ARCH)/mq_test
 
 # -- build and push docker containers --
@@ -56,7 +55,7 @@ publish: $(PLATFORMS) ## Build docker multiarch containers and push to registry
 $(PLATFORMS):
 	@echo "-> $@"
 	@echo "-- Build containers --"
-	docker build -t ${DOCKER_REGISTRY}/rabbitmq-client:$(GOOS)-$(GOARCH)-${VERSION} -t ${DOCKER_REGISTRY}/rabbitmq-client:$(GOOS)-$(GOARCH)-latest --build-arg GOOS=$(GOOS) --build-arg GOARCH=$(GOARCH) --build-arg MAIN_VERSION=${MAIN_VERSION}  --build-arg BUILD_TIME=${BUILD_TIME} .
+	docker build -t ${DOCKER_REGISTRY}/rabbitmq-client:$(GOOS)-$(GOARCH)-${VERSION} -t ${DOCKER_REGISTRY}/rabbitmq-client:$(GOOS)-$(GOARCH)-latest --build-arg GOOS=$(GOOS) --build-arg GOARCH=$(GOARCH) --build-arg VERSION=${VERSION} .
 	@echo "-- Push containers to registry --"
 	docker push ${DOCKER_REGISTRY}/rabbitmq-client:$(GOOS)-$(GOARCH)-${VERSION}
 	docker push ${DOCKER_REGISTRY}/rabbitmq-client:$(GOOS)-$(GOARCH)-latest
