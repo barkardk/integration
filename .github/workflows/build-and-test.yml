@@ -27,6 +27,8 @@ jobs:
           echo $((git describe --tags --dirty --match='v*' 2>/dev/null || echo v0.0.0) | cut -c2- )
       - run: |
           git describe --tags --dirty --match='v*'
+      - run: |
+          echo "VERSION=$((git describe --tags --dirty --match='v*' 2>/dev/null || echo v0.0.0) | cut -c2- )" >> $GITHUB_ENV
 
 #      - name: Lint
 #        uses: golangci/golangci-lint-action@v2
@@ -39,8 +41,7 @@ jobs:
         run:  go mod download -json
 
       - name: A
-        shell: bash
-        run: echo "version=${{ github.ref }}" >> $GITHUB_ENV
+        run: echo "$VERSION or ${{ env.version }}"
 
       - name: Build client binary
         run: make VERSION=${{ env.version }} build.linux
