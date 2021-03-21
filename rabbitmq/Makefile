@@ -1,9 +1,12 @@
 .DEFAULT_GOAL := help
 NON_VENDOR_PACKAGES=$(shell go list ./... | grep -v "vendor")
 BUILD_TIME := $(shell date -u '+%F_%T')
-
-VERSION?=$(shell (git describe --tags --dirty --match='v*' 2>/dev/null || echo v0.0.0) | cut -c2-)
-TAG?=${VERSION}
+ifndef VERSION
+	VERSION := $(shell (git describe --tags --dirty --match='v*' 2>/dev/null || echo v0.0.0) | cut -c2-)
+endif
+ifndef TAG
+	TAG := ${VERSION}
+endif
 DOCKER_REGISTRY?=ghcr.io/barkardk
 
 
