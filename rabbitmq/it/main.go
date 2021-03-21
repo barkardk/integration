@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
+	"os"
+
 	log "github.com/sirupsen/logrus"
 	"github.com/streadway/amqp"
-	"os"
 )
 
 type mqResources struct {
@@ -91,7 +92,7 @@ func RabbitMQPublishMessage(conn *amqp.Connection, m *mqResources) error {
 		}); err != nil {
 		log.Errorf("failed to publish message %s", err)
 	}
-	if ch.Confirm(false); err != nil {
+	if err := ch.Confirm(false); err != nil {
 		log.Errorf("message published could not be confirmed %s", err)
 	}
 	result, err := ch.QueueInspect(m.queueName)
@@ -129,7 +130,9 @@ func RabbitMQConsumeMessage(conn *amqp.Connection, m *mqResources) error {
 		if string(d.Body) != m.messageBody {
 			log.Errorf("Expected message body %v got %v", d.Body, m.messageBody)
 		}
-		d.Ack(false)
+		if err := d.Ack(false); err != nil {
+			log.Errorf("%v", err)
+		}
 	}
 	result, _ := ch.QueueInspect(m.queueName)
 	if result.Messages != m.expectedMessageCountConsumed {
