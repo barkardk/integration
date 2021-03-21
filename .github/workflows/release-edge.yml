@@ -4,7 +4,6 @@ on:
   push:
     tags:
       - edge-v*.*.*
-
 jobs:
   build:
     defaults:
