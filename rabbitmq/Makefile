@@ -5,7 +5,7 @@ ifndef VERSION
 	VERSION := $(shell (git describe --tags --dirty --match='v*' 2>/dev/null || echo v0.0.0) | cut -c2-)
 endif
 ifndef TAG
-	TAG := ${VERSION}
+	TAG := $(shell (git describe --tags --dirty --match='v*' 2>/dev/null || echo v0.0.0) | cut -c2-)
 endif
 DOCKER_REGISTRY?=ghcr.io/barkardk
 
