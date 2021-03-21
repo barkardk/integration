@@ -41,7 +41,7 @@ build.linux: $(TARGETARCH) ## Build multiarch linux binaries
 ARCH = ${word 1, $@}
 $(TARGETARCH): ## Build multiarch linux binaries
 	@echo "-> $@"
-	env GO111MODULE=on CGO_ENABLED=0 GOARCH=$(ARCH) GOOS=linux go build -o target/linux-$(ARCH)/mq_test -tags ${VERSION} -mod=readonly -ldflags "-s -w -X main.version=$(git describe --always --long --dirty) -X version.BuildTime=${BUILD_TIME}" ./it
+	env GO111MODULE=on CGO_ENABLED=0 GOARCH=$(ARCH) GOOS=linux go build -o target/linux-$(ARCH)/mq_test -tags ${VERSION} -ldflags "-s -w -X main.version=$(git describe --always --long --dirty) -X version.BuildTime=${BUILD_TIME}" ./it
 	@chmod 755 target/linux-$(ARCH)/mq_test
 
 # -- build and push docker containers --
