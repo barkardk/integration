@@ -1,9 +1,10 @@
-name: build-edge-release
+name: Edge
 
 on:
   push:
     tags:
       - edge-v*.*.*
+  pull_request:
 jobs:
   release-edge:
     defaults:
@@ -29,6 +30,7 @@ jobs:
           git fetch --tags --force
           export VERSION=$((git describe --tags --dirty --match='v*' 2>/dev/null || echo v0.0.0) | cut -c2- )
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
+          echo "TAG=${VERSION}" >> $GITHUB_ENV
 
       - uses: actions/cache@v2
         env:

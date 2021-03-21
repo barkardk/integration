@@ -34,6 +34,7 @@ jobs:
       - run: |
           export VERSION=$((git describe --tags --dirty --match='v*' 2>/dev/null || echo v0.0.0) | cut -c2- )
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
+          echo "TAG=${VERSION}" >> $GITHUB_ENV
 
       - uses: actions/cache@v2
         env:
