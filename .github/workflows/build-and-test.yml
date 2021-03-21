@@ -20,12 +20,12 @@ jobs:
       - name: Check out code into the Go module directory
         uses: actions/checkout@v2
 
-      - name: Lint
-        uses: golangci/golangci-lint-action@v2
-        with:
-          working-directory: it
-          version: v1.38
-          args: --timeout 15m
+#      - name: Lint
+#        uses: golangci/golangci-lint-action@v2
+#        with:
+#          working-directory: it
+#          version: v1.38
+#          args: --timeout 15m
 
       - name: Download modules
         run:  go mod download -json
