@@ -55,7 +55,8 @@ jobs:
 
       - name: Build docker container
         run: |
-          make release
+          echo "${{ secrets.token }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          make -j5 release
 
       - name: Create GH release
         id: create_release
