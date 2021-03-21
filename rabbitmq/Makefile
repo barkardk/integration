@@ -9,7 +9,7 @@ help: ## Help
 
 docker.restart: docker.stop docker.start ## restart docker-compose
 build: fmt lint dep imp build.linux ## Run a full build with linting , depencency testing and import
-release: publish ## Build linux release containers
+release: publish pi manifests ## Build linux release containers
 release.binary: build.linux  ## Build binaries for various linux architectures
 
 docker.start: ## Start docker-compose
@@ -37,6 +37,30 @@ $(TARGETARCH): ## Build multiarch linux binaries
 	GO111MODULE=on CGO_ENABLED=0 GOARCH=$(ARCH) GOOS=linux go build -o target/linux-$(ARCH)/mq_test -tags ${VERSION} -ldflags "-s -w -X main.Version=${VERSION} -X main.BuildTime=${BUILD_TIME}" ./it
 	@chmod 755 target/linux-$(ARCH)/mq_test
 
+docker-manifest.purge:
+	docker manifest push --purge ${DOCKER_REGISTRY}/rabbitmq-client:latest
+# -- build and push older arm containers --
+TARGETS ?= linux/arm/v7 linux/arm/v6 linux/arm64/v8
+temp = $(subst /, ,$@)
+GOOS= $(word 1, $(temp))
+GOARCH=$(word 1, $(temp))
+ARMV=$(word 3, $(temp))
+.PHONY: $(TARGETS) manifests pi
+pi: $(TARGETS)
+$(TARGETS):
+	@echo "-> $@"
+	@echo "-- Build containers for VERSION:${VERSION} TAG:${TAG} --"
+	@echo "1 $(GOOS) 2 $(GOARCH) 3 -$(ARMV)"
+	docker build -t ${DOCKER_REGISTRY}/rabbitmq-client:$(GOOS)-$(GOARCH)-$(ARMV)-${TAG} -t ${DOCKER_REGISTRY}/rabbitmq-client:$(GOOS)-$(GOARCH)-$(ARMV)-latest --build-arg GOOS=$(GOOS) --build-arg GOARCH=$(GOARCH) --build-arg VERSION=${VERSION} .
+	@echo "-- Push containers to registry --"
+	docker push ${DOCKER_REGISTRY}/rabbitmq-client:$(GOOS)-$(GOARCH)-$(ARMV)-${TAG}
+	docker push ${DOCKER_REGISTRY}/rabbitmq-client:$(GOOS)-$(GOARCH)-$(ARMV)-latest
+	@echo "-- Generate manifests for multiarch support --"
+	docker manifest create --amend "${DOCKER_REGISTRY}/rabbitmq-client:${TAG}" "${DOCKER_REGISTRY}/rabbitmq-client:$(GOOS)-$(GOARCH)-$(ARMV)-${TAG}"
+	docker manifest annotate "${DOCKER_REGISTRY}/rabbitmq-client:${TAG}"  "${DOCKER_REGISTRY}/rabbitmq-client:$(GOOS)-$(GOARCH)-$(ARMV)-${TAG}" --os=$(GOOS) --arch=$(GOARCH) --variant=$(ARMV) --os-version=$(ARMV)
+	docker manifest create --amend "${DOCKER_REGISTRY}/rabbitmq-client:latest" "${DOCKER_REGISTRY}/rabbitmq-client:$(GOOS)-$(GOARCH)-$(ARMV)-latest"
+	docker manifest annotate "${DOCKER_REGISTRY}/rabbitmq-client:latest"  "${DOCKER_REGISTRY}/rabbitmq-client:$(GOOS)-$(GOARCH)-$(ARMV)-latest" --os=$(GOOS) --arch=$(GOARCH) --variant=$(ARMV) --os-version=$(ARMV)
+
 # -- build and push docker containers --
 PLATFORMS ?= linux/amd64 linux/386 linux/arm linux/arm64 darwin/amd64
 temp = $(subst /, ,$@)
@@ -62,6 +86,8 @@ manifests: ## Publish manifests for docker multiarch support
 	@echo "-> $@"
 	docker manifest push "${DOCKER_REGISTRY}/rabbitmq-client:${TAG}"
 	docker manifest push "${DOCKER_REGISTRY}/rabbitmq-client:latest"
+
+
 
 # -- build development binary --
 .PHONY: build.darwin
