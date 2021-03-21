@@ -3,7 +3,7 @@ name: build-edge-release
 on:
   push:
     tags:
-      - v*.*.*-edge
+      - edge-v*.*.*
 
 jobs:
   build:
