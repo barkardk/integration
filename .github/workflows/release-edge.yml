@@ -49,10 +49,11 @@ jobs:
 
       - name: Build docker container
         env:
-          TAG: ${{ steps.vars.outputs.tag }}
+          VERSION: ${{ env.VERSION }}
+          TAG: ${{ env.VERSION }}
         run:  |
           echo "${{ secrets.token }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
-          make TAG=${{ env.VERSION }} VERSION=${{ env.VERSION }} -j3 release
+          make -j3 release
 
 
 

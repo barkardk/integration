@@ -1,12 +1,8 @@
 .DEFAULT_GOAL := help
 NON_VENDOR_PACKAGES=$(shell go list ./... | grep -v "vendor")
 BUILD_TIME := $(shell date -u '+%F_%T')
-ifndef VERSION
-	VERSION := $(shell (git describe --tags --dirty --match='v*' 2>/dev/null || echo v0.0.0) | cut -c2-)
-endif
-ifndef TAG
-	TAG := $(shell (git describe --tags --dirty --match='v*' 2>/dev/null || echo v0.0.0) | cut -c2-)
-endif
+VERSION ?= $(shell (git describe --tags --dirty --match='v*' 2>/dev/null || echo v0.0.0) | cut -c2-)
+TAG ?= $(shell (git describe --tags --dirty --match='v*' 2>/dev/null || echo v0.0.0) | cut -c2-)
 DOCKER_REGISTRY?=ghcr.io/barkardk
 
 
@@ -61,7 +57,7 @@ $(PLATFORMS):
 	@echo "-- Generate manifests for multiarch support --"
 	docker manifest create --amend "${DOCKER_REGISTRY}/rabbitmq-client:${TAG}" "${DOCKER_REGISTRY}/rabbitmq-client:$(GOOS)-$(GOARCH)-${TAG}"
 	docker manifest annotate "${DOCKER_REGISTRY}/rabbitmq-client:${TAG}"  "${DOCKER_REGISTRY}/rabbitmq-client:$(GOOS)-$(GOARCH)-${TAG}" --os=$(GOOS) --arch=$(GOARCH)
-	docker manifest create --amend "${DOCKER_REGISTRY}/rabbitmq-client:latest" "${DOCKER_REGISTRY}/rabbitmq-client:$(GOOS)-$(GOARCH)-latest"
+	docker manifest create --amend "${DOCKER_REGISTRY}/rabbitmq-client:latest" "${DOCKER_REGISTRY}/rabbitmq-client:$(GOOS)-$(GOARCH):latest"
 	docker manifest annotate "${DOCKER_REGISTRY}/rabbitmq-client:latest"  "${DOCKER_REGISTRY}/rabbitmq-client:$(GOOS)-$(GOARCH)-latest" --os=$(GOOS) --arch=$(GOARCH)
 
 manifests: ## Publish manifests for docker multiarch support
