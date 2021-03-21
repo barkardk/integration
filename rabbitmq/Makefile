@@ -37,7 +37,7 @@ TARGETARCH := amd64 arm arm64
 .PHONY: build.linux
 build.linux: $(TARGETARCH) ## Build multiarch linux binaries
 
-VERSION=$((git describe --tags --dirty --match='v*' 2>/dev/null || echo v0.0.0) | cut -c2- )
+VERSION=$(shell (git describe --tags --dirty --match='v*' 2>/dev/null || echo v0.0.0) | cut -c2- )
 MAIN_VERSION=$(shell (git describe --always --long --dirty))
 
 .PHONY: $(TARGETARCH)
