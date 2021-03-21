@@ -7,12 +7,10 @@ DOCKER_REGISTRY?=ghcr.io/barkardk
 help: ## Help
 	@grep -E '^[a-zA-Z\\._-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}'
 
-
 docker.restart: docker.stop docker.start ## restart docker-compose
 build: fmt lint dep imp build.linux ## Run a full build with linting , depencency testing and import
 release: publish ## Build linux release containers
 release.binary: build.linux  ## Build binaries for various linux architectures
-
 
 docker.start: ## Start docker-compose
 	docker-compose up -d --remove-orphans;
