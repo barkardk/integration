@@ -50,6 +50,16 @@ jobs:
           TAGS="ghcr.io/barkardk/rabbitmq-client:${TAG}"
           echo ::set-output name=tags::${TAGS}
 
+      - uses: actions/cache@v2
+        env:
+          cache-name: golang
+        with:
+          path: /go/pkg/mod
+          key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ env.cache-name }}-
+            ${{ runner.os }}-
+
       - name: Download modules
         run: go mod download -json
 
