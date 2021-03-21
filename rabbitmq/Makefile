@@ -37,13 +37,14 @@ TARGETARCH := amd64 arm arm64
 .PHONY: build.linux
 build.linux: $(TARGETARCH) ## Build multiarch linux binaries
 
+VERSION=$((git describe --tags --dirty --match='v*' 2>/dev/null || echo v0.0.0) | cut -c2- )
 MAIN_VERSION=$(shell (git describe --always --long --dirty))
 
 .PHONY: $(TARGETARCH)
 ARCH = ${word 1, $@}
 $(TARGETARCH): ## Build multiarch linux binaries
 	@echo "-> $@"
-	env GO111MODULE=on CGO_ENABLED=0 GOARCH=$(ARCH) GOOS=linux go build -o target/linux-$(ARCH)/mq_test -tags ${VERSION} -ldflags "-s -w -X main.version=${MAIN_VERSION} -X version.BuildTime=${BUILD_TIME}" ./it
+	env GO111MODULE=on CGO_ENABLED=0 GOARCH=$(ARCH) GOOS=linux go build -o target/linux-$(ARCH)/mq_test -tags ${VERSION} -ldflags "-s -w -X main.Version=${MAIN_VERSION} -X main.BuildTime=${BUILD_TIME}" ./it
 	@chmod 755 target/linux-$(ARCH)/mq_test
 
 # -- build and push docker containers --

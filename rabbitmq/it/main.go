@@ -1,5 +1,4 @@
 package main
-
 import (
 	"fmt"
 	"os"
@@ -7,6 +6,9 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/streadway/amqp"
 )
+
+var Version string
+var BuildTime string
 
 type mqResources struct {
 	queueName                     string
@@ -32,6 +34,7 @@ func RabbitMQAMQPConnection() (*amqp.Connection, error) {
 }
 
 func main() {
+	log.Debugf("You are running buildversion %v: compiled at: %v ", Version, BuildTime)
 	qn := &mqResources{
 		queueName:                     "MQTestQueue",
 		messageBody:                   "This is a test message",
