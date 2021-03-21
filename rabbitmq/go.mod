@@ -10,8 +10,10 @@ require (
 	github.com/linkerd/linkerd2 v18.9.1+incompatible // indirect
 	github.com/sirupsen/logrus v1.7.0
 	github.com/streadway/amqp v1.0.0
+	golang.org/x/lint v0.0.0-20201208152925-83fdc39ff7b5 // indirect
 	golang.org/x/net v0.0.0-20210119194325-5f4716e94777 // indirect
 	golang.org/x/time v0.0.0-20201208040808-7e3f01d25324 // indirect
+	golang.org/x/tools v0.1.0 // indirect
 	google.golang.org/grpc v1.35.0 // indirect
 	k8s.io/api v0.19.3 // indirect
 	k8s.io/client-go v0.19.3 // indirect
