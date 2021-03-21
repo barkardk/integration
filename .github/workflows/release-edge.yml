@@ -44,7 +44,7 @@ jobs:
 
       - name: Prepare tag for docker
         id: id
-        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+        run: echo ::set-output name=tag::${GITHUB_REF/refs\/tags\//}
 
       - name: Build docker container
         env:
