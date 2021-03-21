@@ -51,7 +51,7 @@ jobs:
           TAG: ${{ steps.vars.outputs.tag }}
         run:  |
           echo "${{ secrets.token }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
-          make release
+          make release TAG=${TAG} VERSION=${TAG}
 
 
 
