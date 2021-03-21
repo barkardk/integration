@@ -1,8 +1,9 @@
 name: build-edge-release
+
 on:
-    push:
-      branches:
-        - main
+  push:
+    tags:
+      - edge-v*.*.*
 jobs:
   build:
     defaults:
