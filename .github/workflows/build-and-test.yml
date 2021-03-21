@@ -19,6 +19,10 @@ jobs:
 
       - name: Check out code into the Go module directory
         uses: actions/checkout@v2
+      - run: |
+          git fetch --prune --unshallow
+      - run: |
+          echo $(git tag -l)
 
 #      - name: Lint
 #        uses: golangci/golangci-lint-action@v2
@@ -32,9 +36,7 @@ jobs:
 
       - name: A
         shell: bash
-        run: echo "version=$(./tag.sh)" >> $GITHUB_ENV
-
-      - run: ./tag.sh
+        run: echo "version=${{ github.ref }}" >> $GITHUB_ENV
 
       - name: Build client binary
         run: make VERSION=${{ env.version }} build.linux
