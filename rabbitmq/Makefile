@@ -53,7 +53,7 @@ GOARCH = $(word 2, $(temp))
 publish: $(PLATFORMS) ## Build docker multiarch containers and push to registry
 $(PLATFORMS):
 	@echo "-> $@"
-	@echo "-- Build containers --"
+	@echo "-- Build containers for VERSION:${VERSION} and TAG:${TAG}--"
 	docker build -t ${DOCKER_REGISTRY}/rabbitmq-client:$(GOOS)-$(GOARCH)-${TAG} -t ${DOCKER_REGISTRY}/rabbitmq-client:$(GOOS)-$(GOARCH)-latest --build-arg GOOS=$(GOOS) --build-arg GOARCH=$(GOARCH) --build-arg VERSION=${VERSION} .
 	@echo "-- Push containers to registry --"
 	docker push ${DOCKER_REGISTRY}/rabbitmq-client:$(GOOS)-$(GOARCH)-${TAG}
