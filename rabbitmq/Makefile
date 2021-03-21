@@ -4,6 +4,9 @@ BUILD_TIME := $(shell date -u '+%F_%T')
 ifndef VERSION
 	VERSION ?= $(shell (git describe --tags --dirty --match='v*' 2>/dev/null || echo v0.0.0) | cut -c2-)
 endif
+ifndef TAG
+	TAG=$(shell (git describe --tags --dirty --match='v*' 2>/dev/null || echo v0.0.0) | cut -c2- )
+endif
 ifndef DOCKER_REGISTRY
 	DOCKER_REGISTRY=ghcr.io/barkardk
 endif
@@ -34,8 +37,6 @@ TARGETARCH := amd64 arm arm64
 .PHONY: build.linux
 build.linux: $(TARGETARCH) ## Build multiarch linux binaries
 
-VERSION=$(shell (git describe --tags --dirty --match='v*' 2>/dev/null || echo v0.0.0) | cut -c2- )
-
 .PHONY: $(TARGETARCH)
 ARCH = ${word 1, $@}
 $(TARGETARCH): ## Build multiarch linux binaries
@@ -44,7 +45,6 @@ $(TARGETARCH): ## Build multiarch linux binaries
 	@chmod 755 target/linux-$(ARCH)/mq_test
 
 # -- build and push docker containers --
-TAG=$(shell (git describe --tags --dirty --match='v*' 2>/dev/null || echo v0.0.0) | cut -c2- )
 PLATFORMS ?= linux/amd64 linux/386 linux/arm linux/arm64 darwin/amd64
 temp = $(subst /, ,$@)
 GOOS = $(word 1, $(temp))
