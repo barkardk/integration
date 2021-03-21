@@ -29,8 +29,10 @@ jobs:
         id: prep
         run: |
           SHORTREF=${GITHUB_SHA::8}
+          GOARCH="amd64 arm arm64"
           TAGS="ghcr.io/barkardk/rabbitmq-client:latest,ghcr.io/barkardk/rabbitmq-client:${SHORTREF}"
           echo ::set-output name=tags::${TAGS}
+          echo ::set-output name=goarch::${GOARCH}
 
       - name: Download modules
         run:  go mod download -json
@@ -58,7 +60,8 @@ jobs:
           builder: ${{ steps.buildx.outputs.name }}
           context: rabbitmq
           file: rabbitmq/Dockerfile
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64 linux/386 linux/arm linux/arm64 darwin/amd64
+          build-args: GOARCH=${{ steps.prep.outputs.goarch }}
           push: true
           tags: ${{ steps.prep.outputs.tags }}
           github-token: ${{ secrets.token }}
