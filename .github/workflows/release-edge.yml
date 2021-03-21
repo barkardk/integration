@@ -35,6 +35,7 @@ jobs:
       - name: Build docker container
         run:  |
           echo "${{ secrets.token }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          VERSION=$((git describe --tags --dirty --match='v*' 2>/dev/null || echo v0.0.0) | cut -c2- )
           make release
 
 
