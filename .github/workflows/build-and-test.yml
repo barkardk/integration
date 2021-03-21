@@ -30,23 +30,6 @@ jobs:
       - run: |
           export VERSION=$((git describe --tags --dirty --match='v*' 2>/dev/null || echo v0.0.0) | cut -c2- )
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
-
-#      - name: Lint
-#        uses: golangci/golangci-lint-action@v2
-#        with:
-#          working-directory: it
-#          version: v1.38
-#          args: --timeout 15m
-
-      - name: Download modules
-        run:  go mod download -json
-
-      - name: A
-        run: echo "$VERSION or ${{ env.version }}"
-
-      - name: Build client binary
-        env:
-          VERSION: ${{ env.version }}
-        run: |
-          make build.linux
+      - run:  go mod download -json
+      - run:  make build.linux
 
