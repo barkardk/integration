@@ -15,6 +15,10 @@ services:
         retries: 3
   rabbitmq-test:
     image:  ghcr.io/barkardk/rabbitmq-client:latest
+    command: >
+       /bin/sh -c "sleep 20 # wait for pods to start
+       && ./mq_test"
+
     restart: on-failure
     depends_on:
       - rabbitmq-server
