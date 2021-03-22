@@ -60,7 +60,7 @@ $(TARGETS):
 	docker manifest annotate "${DOCKER_REGISTRY}/rabbitmq-client:latest"  "${DOCKER_REGISTRY}/rabbitmq-client:$(GOOS)-$(GOARCH)-$(ARMV)-latest" --os=$(GOOS) --arch=$(GOARCH) --variant=$(ARMV)
 
 # -- build and push docker containers --
-PLATFORMS ?= linux/amd64 linux/386 linux/arm linux/arm64 darwin/amd64
+PLATFORMS ?= linux/amd64 linux/386 linux/arm linux/arm64
 TPLATFORM=$(word 1, $@)
 temp = $(subst /, ,$@)
 GOOS = $(word 1, $(temp))
