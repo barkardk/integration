@@ -9,7 +9,7 @@ help: ## Help
 
 docker.restart: docker.stop docker.start ## restart docker-compose
 build: fmt lint dep imp build.linux ## Run a full build with linting , depencency testing and import
-release: docker-manifest.purge publish pi manifests ## Build linux release containers
+release: docker-manifest.purge  pi manifests ## Build linux release containers
 pies: docker-manifest.purge pi manifests
 release.binary: build.linux  ## Build binaries for various linux architectures
 
