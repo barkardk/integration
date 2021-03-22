@@ -36,7 +36,7 @@ Deploy to kubernetes
 kubectl apply -f it/testdata
 ```
 ## Usage
-Run locally as a standalone client 
+Run locally as a standalone client (Needs access to a running RabbitMQ Server)
 ```bash
 export RABBITMQ_AMQP_CONN_STR=amqp://guest:guest@rabbitmq-server:5672/
 ./mq_test
