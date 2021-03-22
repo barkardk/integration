@@ -61,7 +61,7 @@ $(TARGETS):
 
 # -- build and push docker containers --
 PLATFORMS ?= linux/amd64 linux/386 linux/arm linux/arm64 darwin/amd64
-PLATFORM=$(word 1, $@)
+TPLATFORM=$(word 1, $@)
 temp = $(subst /, ,$@)
 GOOS = $(word 1, $(temp))
 GOARCH = $(word 2, $(temp))
