@@ -23,15 +23,24 @@ The client needs a running rabbitmq server to start up properly
 
 ## Installation
 
-Build a test binary , compile a docker image and push to docker registry
+Build a test binary for amd64, arm and arm64
 ```bash
-make build
+make build.linux
+```
+Build and release multiarch docker images
+```bash
+make release
 ```
 Deploy to kubernetes
 ```bash
 kubectl apply -f it/testdata
 ```
 ## Usage
+Run locally as a standalone client 
+```bash
+export RABBITMQ_AMQP_CONN_STR=amqp://guest:guest@rabbitmq-server:5672/
+./mq_test
+```
 Run locally using docker compose
 ```bash
 docker-compose up
