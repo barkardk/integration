@@ -6,6 +6,7 @@ Various integration tests that can be used on common platforms
 
 ### Release
 Stable versions are released via tags that published the docker images to github via actions.
+Also see [https://barkardk.github.io/integration/](https://barkardk.github.io/integration/)
 
 # RabbitMQ integration
 RabbitMQ integration is a small test suite to test rabbitmq server installations.  
