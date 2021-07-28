@@ -37,7 +37,7 @@ func RabbitMQAMQPConnection() (*amqp.Connection, error) {
 func main() {
 	log.Debugf("You are running buildversion %v: compiled at: %v ", Version, BuildTime)
 	qn := &mqResources{
-		queueName:                     "demo_queue",
+		queueName:                     "zaphod",
 		messageBody:                   "In the beginning the Universe was created. This has made a lot of people very angry and been widely regarded as a bad move.",
 		expectedMessageCountPublished: 1,
 		expectedMessageCountConsumed:  0,
