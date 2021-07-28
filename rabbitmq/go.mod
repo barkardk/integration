@@ -8,7 +8,7 @@ require (
 	github.com/gophercloud/gophercloud v0.15.0 // indirect
 	github.com/imdario/mergo v0.3.11 // indirect
 	github.com/linkerd/linkerd2 v18.9.1+incompatible // indirect
-	github.com/sirupsen/logrus v1.7.0
+	github.com/sirupsen/logrus v1.8.1
 	github.com/streadway/amqp v1.0.0
 	golang.org/x/lint v0.0.0-20201208152925-83fdc39ff7b5 // indirect
 	golang.org/x/net v0.0.0-20210119194325-5f4716e94777 // indirect

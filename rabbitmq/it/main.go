@@ -37,8 +37,8 @@ func RabbitMQAMQPConnection() (*amqp.Connection, error) {
 func main() {
 	log.Debugf("You are running buildversion %v: compiled at: %v ", Version, BuildTime)
 	qn := &mqResources{
-		queueName:                     "MQTestQueue",
-		messageBody:                   "This is a test message",
+		queueName:                     "demo_queue",
+		messageBody:                   "In the beginning the Universe was created. This has made a lot of people very angry and been widely regarded as a bad move.",
 		expectedMessageCountPublished: 1,
 		expectedMessageCountConsumed:  0,
 	}
@@ -86,7 +86,7 @@ func RabbitMQPublishMessage(conn *amqp.Connection, m *mqResources) error {
 	}
 	defer ch.Close()
 	if err = ch.Publish(
-		"",
+		"ex_demo",
 		m.queueName,
 		false,
 		false,
