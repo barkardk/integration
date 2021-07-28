@@ -86,7 +86,7 @@ func RabbitMQPublishMessage(conn *amqp.Connection, m *mqResources) error {
 	}
 	defer ch.Close()
 	if err = ch.Publish(
-		"ex_demo",
+		"ex-demo",
 		m.queueName,
 		false,
 		false,
