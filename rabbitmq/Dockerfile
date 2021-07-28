@@ -1,6 +1,7 @@
 FROM --platform=${BUILDPLATFORM} golang:1.16-alpine as base
 WORKDIR /src
 COPY go.mod /src/
+COPY go.sum /src/
 COPY it /src/it
 RUN go mod download > /dev/null
 
