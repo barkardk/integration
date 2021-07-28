@@ -8,7 +8,7 @@ help: ## Help
 	@grep -E '^[a-zA-Z\\._-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}'
 
 docker.restart: docker.stop docker.start ## restart docker-compose
-build: fmt lint dep imp build.linux ## Run a full build with linting , depencency testing and import
+build: fmt lint build.linux ## Run a full build with linting , depencency testing and import
 release: docker-manifest.purge publish pi manifests ## Build linux release containers
 pies: docker-manifest.purge pi manifests
 release.binary: build.linux  ## Build binaries for various linux architectures
@@ -108,8 +108,7 @@ lint:
 	@echo "-> $@"
 	@go get -u golang.org/x/lint/golint
 	@golint ./... | tee /dev/stderr
-	@go get -u golang.org/x/tools/go/analysis/cmd/vet
-	@go vet --all
+	@go vet --all ./it
 
 .PHONY: dep
 dep:
