@@ -48,9 +48,9 @@ func main() {
 		log.Fatalf("Could not create RabbitMQ connection %v", err)
 	}
 
-	if err := RabbitMQCreateQueue(conn, qn); err != nil {
-		log.Fatalf("Error connect to RabbitMQ and create a queue %v", err)
-	}
+	// if err := RabbitMQCreateQueue(conn, qn); err != nil {
+    //		log.Fatalf("Error connect to RabbitMQ and create a queue %v", err)
+	// }
 
 	if err := RabbitMQPublishMessage(conn, qn); err != nil {
 		log.Fatalf("Error publish message to RabbitMQ %v", err)
