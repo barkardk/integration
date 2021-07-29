@@ -68,7 +68,7 @@ func RabbitMQCreateQueue(conn *amqp.Connection, m *mqResources) error {
 		log.Errorf("could not open channel %v", err)
 	}
 	defer ch.Close()
-	q, err := ch.QueueDeclare(m.queueName, false, false, false, false, nil)
+	q, err := ch.QueueDeclare(m.queueName, true, false, false, false, nil)
 	if err != nil {
 		log.Errorf("failed to declare RabbitMQ queue %v", err)
 	}
